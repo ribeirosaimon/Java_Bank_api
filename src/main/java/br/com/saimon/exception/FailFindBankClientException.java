@@ -1,11 +1,15 @@
 package br.com.saimon.exception;
 
-public class FailFindBankClientException extends BankException{
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(HttpStatus.NOT_FOUND)
+public class FailFindBankClientException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
-	public FailFindBankClientException(String message) {
-		super(message);
+	public FailFindBankClientException(String exception) {
+		super(exception);
 	}
 
 }

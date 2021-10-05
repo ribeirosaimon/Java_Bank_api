@@ -1,7 +1,7 @@
 package br.com.saimon.services;
 
 import br.com.saimon.converter.DozerConverter;
-import br.com.saimon.exception.ResourceNOtFoundException;
+import br.com.saimon.exception.ResourceNotFoundException;
 import br.com.saimon.model.entities.BankClientVO;
 import br.com.saimon.model.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,8 @@ public class ClientServices {
         user.setName(name);
         user.setPassword(password);
         user.setAccount(str_random_number);
-        user.setBalance(-100);
+        user.setBalance(0);
+        user.setCheck_limit(-200.0);
         var entity = DozerConverter.parseObject(user, BankClientVO.class);
         var vo = DozerConverter.parseObject(clientRepository.save(user), BankClientVO.class);
         return vo;
@@ -52,7 +53,8 @@ public class ClientServices {
     }
 
     public void delete(Long id) {
-        BankClientVO user = clientRepository.findById(id).orElseThrow(() -> new ResourceNOtFoundException("No records found for this ID"));
+        BankClientVO user = clientRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
         clientRepository.delete(user);
     }
 }

@@ -20,7 +20,8 @@ public class MovementExecutor {
 	return clientRepository.findById(id).orElseThrow(() -> new FailFindBankClientException("ID not found"));
 	}
 
-	public BankClientVO withdraw(BankClientVO user, Double value){
+	public BankClientVO withdraw(Long id, Double value){
+		BankClientVO user = findClientbyId(id);
 		return changeWithdrawBalance(user ,value ).orElseThrow(() -> new BalanceMoneyException("Not have money"));
 	}
 	private Optional<BankClientVO> changeWithdrawBalance(BankClientVO found_user, Double value){
@@ -28,18 +29,18 @@ public class MovementExecutor {
 			double limit = found_user.getCheck_limit();
 			if(balance - value >= limit){
 				found_user.setBalance(balance -= value);
-				//clientRepository.save(found_user);
+				clientRepository.save(found_user);
 				return Optional.of(found_user);
 			}
 			return Optional.empty();
 		}
 
-	public boolean deposit(long id, double money) {
+	public BankClientVO deposit(long id, double money) {
 		BankClientVO user = clientRepository.findById(id).get();
 		double balance = user.getBalance();
 		user.setBalance(balance += money);
 		clientRepository.save(user);
-		return true;
+		return user;
 
 	}
 }

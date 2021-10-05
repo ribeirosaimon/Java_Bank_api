@@ -18,6 +18,7 @@ class JavaBankApplicationTests {
 	CrudTest tests = new CrudTest();
 
 	final BankClientVO new_user = tests.userCreateTest();
+	final MovementExecutor movement = new MovementExecutor();
 
 	@Test
 	void entityInitTest() {
@@ -30,11 +31,8 @@ class JavaBankApplicationTests {
 
 	@Test
 	void entitywitdrawTest(){
-		MovementExecutor movement = new MovementExecutor();
-		BankClientVO movementUser = movement.withdraw(new_user, 200.0);
+		BankClientVO movementUser = movement.withdraw(new_user.getId(), 200.0);
 		Assert.assertEquals(-200.0, movementUser.getBalance(), 0);
-		BankClientVO newWithdraw = movement.withdraw(movementUser, 1.0);
-		String expectedMessage = "Not have money";
-		Assert.assertEquals(newWithdraw, expectedMessage);
 	}
+
 }
