@@ -1,7 +1,7 @@
 package br.com.saimon.services;
 
 import br.com.saimon.converter.DozerConverter;
-import br.com.saimon.exception.ResourceNotFoundException;
+import br.com.saimon.exception.ClientNotFoundException;
 import br.com.saimon.model.entities.BankClientVO;
 import br.com.saimon.model.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,13 +48,12 @@ public class ClientServices {
         for (BankClientVO c : clients) {
             destinationObjects.add(c);
         }
-        ;
         return DozerConverter.parseListObject(destinationObjects, BankClientVO.class);
     }
 
     public void delete(Long id) {
         BankClientVO user = clientRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
+                .orElseThrow(() -> new ClientNotFoundException("No records found for this ID"));
         clientRepository.delete(user);
     }
 }

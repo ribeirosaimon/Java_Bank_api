@@ -1,7 +1,7 @@
 package br.com.saimon.services;
 
-import br.com.saimon.exception.BalanceMoneyException;
-import br.com.saimon.exception.FailFindBankClientException;
+import br.com.saimon.exception.ClientNotFoundException;
+import br.com.saimon.exception.NoHaveMoneyException;
 import br.com.saimon.model.entities.BankClientVO;
 import br.com.saimon.model.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +17,12 @@ public class MovementExecutor {
 
 
 	public BankClientVO findClientbyId(Long id){
-	return clientRepository.findById(id).orElseThrow(() -> new FailFindBankClientException("ID not found"));
+	return clientRepository.findById(id).orElseThrow(() -> new ClientNotFoundException("ID not found"));
 	}
 
 	public BankClientVO withdraw(Long id, Double value){
 		BankClientVO user = findClientbyId(id);
-		return changeWithdrawBalance(user ,value ).orElseThrow(() -> new BalanceMoneyException("Not have money"));
+		return changeWithdrawBalance(user ,value ).orElseThrow(() -> new NoHaveMoneyException("Not have money"));
 	}
 	private Optional<BankClientVO> changeWithdrawBalance(BankClientVO found_user, Double value){
 			double balance = found_user.getBalance();
