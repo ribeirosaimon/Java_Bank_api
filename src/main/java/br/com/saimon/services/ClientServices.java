@@ -25,7 +25,7 @@ public class ClientServices {
     public BankClientVO createClient(String name, String password) {
         Random rand = new Random();
         BankClientVO user = new BankClientVO();
-        Integer int_random = rand.nextInt(25);
+        Integer int_random = rand.nextInt(255);
         String str_random_number = int_random.toString();
 
         user.setName(name);
